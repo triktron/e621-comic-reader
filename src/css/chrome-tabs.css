@@ -6,7 +6,7 @@
   height: 46px;
   padding: 8px 3px 4px 3px;
   background: #dee1e6;
-  overflow: hidden;
+  /* overflow: hidden; */
 }
 .chrome-tabs * {
   box-sizing: inherit;
