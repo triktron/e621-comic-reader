@@ -12,10 +12,9 @@
 </head>
 
 <body>
-  <div class="mock-browser">
       <div class="chrome-tabs" style="--tab-content-margin: 9px">
         <div class="chrome-tabs-content">
-          <div class="chrome-tab" active>
+          <div class="chrome-tab" active data-tab-id="0">
             <div class="chrome-tab-dividers"></div>
             <div class="chrome-tab-background">
               <svg version="1.1" xmlns="http://www.w3.org/2000/svg"><defs><symbol id="chrome-tab-geometry-left" viewBox="0 0 214 36"><path d="M17 0h197v36H0v-2c4.5 0 9-3.5 9-8V8c0-4.5 3.5-8 8-8z"/></symbol><symbol id="chrome-tab-geometry-right" viewBox="0 0 214 36"><use xlink:href="#chrome-tab-geometry-left"/></symbol><clipPath id="crop"><rect class="mask" width="100%" height="100%" x="0"/></clipPath></defs><svg width="52%" height="100%"><use xlink:href="#chrome-tab-geometry-left" width="214" height="36" class="chrome-tab-geometry"/></svg><g transform="scale(-1, 1)"><svg width="52%" height="100%" x="-100%" y="0"><use xlink:href="#chrome-tab-geometry-right" width="214" height="36" class="chrome-tab-geometry"/></svg></g></svg>
@@ -53,23 +52,8 @@
       </div>
       <div class="chrome-tabs-optional-shadow-below-bottom-bar"></div>
       <div class="mock-browser-content">
-        <div class="buttons">
-          <button data-theme-toggle>Toggle dark theme</button>
-          <button data-add-tab>Add new tab</button>
-          <button data-add-background-tab>Add tab in the background</button>
-          <button data-remove-tab>Remove active tab</button>
-
-          <button data-add-comic>Add Comic</button>
-        </div>
-
-        <div class="comics">
-          <div class="comic">
-            <img src="file:///C:/Users/Triktron/AppData/Roaming/e621-comic-reader/comics/14921/1600458.png" alt="">
-            <div class="title"></div>
-          </div>
-        </div>
+        <webview data-tab-id="0" src="pages/home.html" nodeintegration autosize="on"></webview>
       </div>
-    </div>
 
 
   <script>
@@ -84,59 +68,10 @@
   <script>
     if (window.module) module = window.module;
   </script>
-  <script src="js/index.js" charset="utf-8"></script>
 
   <script src="js/draggabilly.pkgd.min.js"></script>
-    <script src="js/chrome-tabs.js"></script>
-    <script>
-      var el = document.querySelector('.chrome-tabs')
-      var chromeTabs = new ChromeTabs()
-
-      chromeTabs.init(el)
-
-      el.addEventListener('activeTabChange', ({ detail }) => console.log('Active tab changed', detail.tabEl))
-      el.addEventListener('tabAdd', ({ detail }) => console.log('Tab added', detail.tabEl))
-      el.addEventListener('tabRemove', ({ detail }) => console.log('Tab removed', detail.tabEl))
-
-      document.querySelector('button[data-add-tab]').addEventListener('click', _ => {
-        chromeTabs.addTab({
-          title: 'New Tab',
-          favicon: false
-        })
-      })
-
-      document.querySelector('button[data-add-background-tab]').addEventListener('click', _ => {
-        chromeTabs.addTab({
-          title: 'New Tab',
-          favicon: false
-        }, {
-          background: true
-        })
-      })
-
-      document.querySelector('button[data-remove-tab]').addEventListener('click', _ => {
-        chromeTabs.removeTab(chromeTabs.activeTabEl)
-      })
-
-      document.querySelector('button[data-theme-toggle]').addEventListener('click', _ => {
-        if (el.classList.contains('chrome-tabs-dark-theme')) {
-          document.documentElement.classList.remove('dark-theme')
-          el.classList.remove('chrome-tabs-dark-theme')
-        } else {
-          document.documentElement.classList.add('dark-theme')
-          el.classList.add('chrome-tabs-dark-theme')
-        }
-      })
-
-      window.addEventListener('keydown', (event) => {
-        if (event.ctrlKey && event.key === 't') {
-          chromeTabs.addTab({
-            title: 'New Tab',
-            favicon: false
-          })
-        }
-      })
-    </script>
+  <script src="js/chrome-tabs.js"></script>
+  <script src="js/index.js" charset="utf-8"></script>
 </body>
 
 </html>

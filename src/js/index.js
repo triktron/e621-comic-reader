@@ -1,102 +1,56 @@
-const Store = require('electron-store');
-const prompt = require('electron-prompt');
-const electron = require('electron')
-const got = require('got');
-const Bottleneck = require("bottleneck/es5");
-const fs = require('fs');
-const { DownloaderHelper } = require('node-downloader-helper');
-var tmp = require('tmp');
-var mkdirp = require('mkdirp');
+// document.querySelector("webview").openDevTools()
 
-const config_folder = electron.remote.app.getPath("appData") + "\\e621-comic-reader";
+const IPC = require('./js/classes/ipc.js');
+var ipc = new IPC.serve();
 
-const store = new Store({
-  cwd: config_folder
-});
+var el = document.querySelector('.chrome-tabs')
+var chromeTabs = new ChromeTabs()
 
-const limiter = new Bottleneck({
-  minTime: 1000,
-  maxConcurrent: 2
-});
+chromeTabs.init(el)
 
-var comics;
-startup()
-// start the app
-function startup() {
-  // get all the stored comics
-  comics = store.get("comics", {});
+var ids = 1;
 
-  console.log(comics);
-}
+el.addEventListener('activeTabChange', ({ detail }) => {
+  console.log("webview[data-tab-id=\"" + detail.tabEl.getAttribute("data-tab-id") + "\"]");
+  var el = document.querySelector("webview[data-tab-id=\"" + detail.tabEl.getAttribute("data-tab-id") + "\"]");
 
-// add a comic to the database
-function add_comic(id) {
-  console.log(id);
-  comics[id] = {
-    pages: []
+  document.querySelectorAll("webview").forEach(ell => ell.classList.add("hidden"));
+  if (el) el.classList.remove("hidden");
+})
+// el.addEventListener('tabAdd', ({ detail }) => console.log('Tab added', detail.tabEl))
+// el.addEventListener('tabRemove', ({ detail }) => console.log('Tab removed', detail.tabEl))
+
+ipc.on("add_tab", () => {
+
+
+  document.querySelector('.mock-browser-content').innerHTML += '<webview data-tab-id="' + ids + '" src="pages/comic.html" nodeintegration autosize="on"></webview>'
+  // setTimeout(() => document.querySelector("webview[data-tab-id=\"" + ids + "\"]").openDevTools(), 1000)
+  chromeTabs.addTab({
+  title: 'New Tab',
+  favicon: false,
+  id: ids++
+})})
+
+ipc.on("add_tab_background", () => chromeTabs.addTab({
+  title: 'New Tab',
+  favicon: false
+}, {
+  background: true
+}))
+
+ipc.on("close_tab", () => chromeTabs.removeTab(chromeTabs.activeTabEl))
+
+ipc.on("switch_theme", () => {
+  if (el.classList.contains('chrome-tabs-dark-theme')) {
+    document.documentElement.classList.remove('dark-theme')
+    el.classList.remove('chrome-tabs-dark-theme')
+  } else {
+    document.documentElement.classList.add('dark-theme')
+    el.classList.add('chrome-tabs-dark-theme')
   }
-  store.set("comics", comics);
-  update_comic(id);
-}
-
-// update comic data
-function update_comic(id, p = 1) {
-  var comic = comics[id];
-  var pages = [];
-
-  got("https://e621.net/pool/show/" + id + ".json?page=" + p).then((r) => JSON.parse(r.body)).then(data => {
-      pages = data.posts.map(post => {
-        return {
-          description: post.description,
-          file_url: post.file_url,
-          preview_url: post.preview_url,
-          sources: post.sources,
-          id:post.id
-        }
-      })
-      comic.name = data.name;
-      if (p == 1) comic.pages = pages; else comic.pages = comic.pages.concat(pages);
-      p++;
-
-    store.set("comics", comics);
-
-    if (pages.length > 0) setTimeout(() => update_comic(id, p),500); else download_comic(id);
-  })
-
-}
-
-const DownloadManager = require('./js/download');
-var dm = new DownloadManager(() => {
-  document.querySelector(".chrome-tabs-bottom-bar.progress").style.display = dm.progress() == 0 ? "none" : "block";
-  document.querySelector(".chrome-tabs-bottom-bar.progress").style.width = dm.progress() * 100 + "%";
 })
 
-function download_comic(id) {
-  comics[id].pages.forEach((page) => {
-    var path = config_folder + "\\comics\\" + id + "\\" + page.id + "." + page.file_url.split(".").pop();
-    dm.download(page.file_url, path);
-  })
-}
-
-document.querySelector('button[data-add-comic]').addEventListener('click', _ => {
-  prompt({
-      title: 'Add a comic',
-      label: 'Please enter the ID of the comic',
-      inputAttrs: {
-        type: 'number'
-      },
-      height: 145
-    })
-    .then((r) => {
-      if (r) add_comic(r);
-    })
-    .catch(console.error);
-})
-
-const {
-  remote
-} = require('electron')
-
+const {remote} = require('electron')
 
 document.getElementById("min-btn").addEventListener("click", function(e) {
   remote.BrowserWindow.getFocusedWindow().minimize();

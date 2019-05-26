@@ -259,6 +259,10 @@
       if (tabProperties.id) {
         tabEl.setAttribute('data-tab-id', tabProperties.id)
       }
+
+      if (tabProperties.url) {
+        tabEl.setAttribute('data-tab-url', tabProperties.url)
+      }
     }
 
     cleanUpPreviouslyDraggedTabs() {
