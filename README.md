@@ -4,7 +4,7 @@ Tired of reading your favorite comics on sites with basically no navigation? wor
 
 ## Getting Started
 
-Just download the correct installer for your pc from the [releases tab](https://github.com/triktron/e621-comic-reader/releases/latest).
+Just download the correct installer for your pc from the [releases tab](https://github.com/triktron/comic-reader/releases/latest).
 
 ### Prerequisites
 
