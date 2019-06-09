@@ -2,20 +2,32 @@
 <html lang="en" dir="ltr">
   <head>
       <link rel="stylesheet" href="../css/index.css">
+      <link rel="stylesheet" href="../css/home.css">
   </head>
   <body>
     <div class="buttons">
       <button data-theme-toggle>Toggle dark theme</button>
-      <button data-add-tab>Add new tab</button>
-      <button data-add-background-tab>Add tab in the background</button>
-      <button data-remove-tab>Remove active tab</button>
 
-      <button data-add-comic>Add Comic</button>
+      <button data-add-comic for="dialog_state"><label for="dialog_state">Add Comic</label></button>
+
     </div>
 
     <div class="comics">
 
     </div>
+
+    <input type="checkbox" name="dialog_state" id="dialog_state" class="dialog_state">
+<div id='dialog'>
+  <label id="dlg-back" for="dialog_state"></label>
+  <div id='dlg-wrap'>
+    <h2 id='dlg-header'>What comic would you like to add?</h2>
+    <div id='dlg-content'>Please enter a comic url: <input class="add_comic_url" type="text" placeholder="url"></input></div>
+    <div id='dlg-prompt'>
+      <div class='button positive'><label for="dialog_state">Add the comic.</label></div>
+      <div class='button'><label for="dialog_state">No, I'll reconsider</label></div>
+    </div>
+  </div>
+</div>
 
     <!-- <script src="../js/utils.js" charset="utf-8"></script> -->
     <!-- <script src="../js/menu.js" charset="utf-8"></script> -->

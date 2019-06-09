@@ -1,26 +1,38 @@
-var pswpElement = document.querySelectorAll('.pswp')[0];
+/* global PhotoSwipe, PhotoSwipeUI_Default */
 
-const Comic = require("../js/classes/comic.js");
+const pswpElement = document.querySelectorAll('.pswp')[0];
 
-var plugins = require("../js/classes/plugins/plugins.js")
-plugins.E621(14921,data => {
-  var a = new Comic().loadFromData(data);
+const Comic = require('../js/classes/comic.js');
 
-  var items = a.toPSObject();
-  
-  // modified lib to not close in source
-  var options = {
-      loop: false,
-      pinchToClose: false,
-      closeOnScroll: false,
-      closeOnVerticalDrag: false,
-      escKey: false,
-      history: false,
-      index: 0, // start at first slide
-      barsSize: {top:0, bottom:0},
-  };
+const hash = document.location.hash.substr(1).split('/');
+const comic = new Comic();
+comic.id = hash[0];
+comic.handler = hash[1];
+comic.loadFromFile();
 
-  var gallery = new PhotoSwipe( pswpElement, PhotoSwipeUI_Default, items, options);
-  gallery.init();
+const items = comic.toPSObject();
 
-})
+// modified lib to not close in source
+const options = {
+  loop: false,
+  pinchToClose: false,
+  closeOnScroll: false,
+  closeOnVerticalDrag: false,
+  escKey: false,
+  history: false,
+  index: 0, // start at first slide
+  barsSize: { top: 0, bottom: 0 },
+};
+
+const gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, options);
+gallery.init();
+
+document.querySelector('.pswp__button--update').addEventListener('click', () => {
+  alert('Starting comic update!');
+
+  comic.update(() => {
+    alert('Done updating.');
+
+    location.reload();
+  });
+});

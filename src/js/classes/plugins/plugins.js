@@ -1,1 +1,1 @@
-module.exports.E621 = require("./e621.js")
+module.exports.e621 = require('./e621.js');

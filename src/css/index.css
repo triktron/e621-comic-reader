@@ -12,7 +12,7 @@ body {
   padding: 0;
   overflow: hidden;
 }
-button {
+button, .button {
   font-family: inherit;
   display: inline-block;
   cursor: pointer;
@@ -181,10 +181,12 @@ html.dark-theme button:focus {
         border-radius: 5px;
         overflow: hidden;
         margin: 1%;
+        float: left;
     }
 
     .comic img {
         width: 100%;
+        max-height: 20vw;
     }
 
     .comic .title {
@@ -199,6 +201,8 @@ html.dark-theme button:focus {
 
     webview {
         height: 100%;
+        width: 100%;
+        position: absolute;
     }
 
     body, html {

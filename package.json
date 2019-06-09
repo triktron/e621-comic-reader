@@ -1,8 +1,8 @@
 {
-  "name": "e621-comic-reader",
-  "productName": "e621-comic-reader",
+  "name": "comic-reader",
+  "productName": "comic-reader",
   "version": "1.0.0",
-  "description": "My Electron application description",
+  "description": "a electron app to read comics from all over the web",
   "main": "src/index.js",
   "scripts": {
     "start": "electron-forge start",
@@ -11,14 +11,15 @@
     "publish": "electron-forge publish",
     "lint": "eslint src --color"
   },
-  "keywords": [],
-  "author": "eletr",
+  "keywords": ["electron", "comic"],
+  "author": "triktron",
   "license": "MIT",
   "config": {
     "forge": {
+      "out": "build",
       "make_targets": {
         "win32": [
-          "squirrel"
+          "wix"
         ],
         "darwin": [
           "zip"
@@ -31,18 +32,11 @@
       "electronPackagerConfig": {
         "packageManager": "npm"
       },
-      "electronWinstallerConfig": {
-        "name": "e621_comic_reader"
-      },
       "electronInstallerDebian": {},
       "electronInstallerRedhat": {},
       "github_repository": {
-        "owner": "",
-        "name": ""
-      },
-      "windowsStoreConfig": {
-        "packageName": "",
-        "name": "e621comicreader"
+        "owner": "triktron",
+        "name": "e621-comic-reader"
       }
     }
   },
@@ -71,6 +65,7 @@
     "electron-forge": "^5.2.4",
     "electron-prebuilt-compile": "4.0.0",
     "electron-reload": "^1.4.0",
+    "electron-wix-msi": "^2.1.1",
     "eslint": "^3.19.0",
     "eslint-config-airbnb": "^15.1.0",
     "eslint-plugin-import": "^2.17.2",

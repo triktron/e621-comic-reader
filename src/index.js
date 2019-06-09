@@ -6,7 +6,7 @@ if (require('electron-squirrel-startup')) { // eslint-disable-line global-requir
 }
 const isDev = require('electron-is-dev');
 
-if (isDev) require('electron-reload')(__dirname);
+if (isDev) require('electron-reload')(__dirname); // eslint-disable-line global-require
 
 
 let mainWindow;
@@ -16,7 +16,7 @@ const createWindow = () => {
     width: 800,
     height: 600,
     frame: false,
-    menu: null
+    menu: null,
   });
 
   mainWindow.loadURL(`file://${__dirname}/index.html`);

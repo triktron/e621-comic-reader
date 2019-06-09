@@ -6,33 +6,33 @@ ipc.config.networkPort = 5727;
 
 
 class IPCServe {
-    constructor() {
-        ipc.serveNet();
-        ipc.server.start();
-    }
+  constructor() {
+    ipc.serveNet();
+    ipc.server.start();
+  }
 
-    on(name, cb) {
-      ipc.server.on(name, cb);
-    }
+  on(name, cb) { // eslint-disable-line class-methods-use-this
+    ipc.server.on(name, cb);
+  }
 
-    emit(name, data) {
-      ipc.server.emit(name, data);
-    }
+  emit(name, data) { // eslint-disable-line class-methods-use-this
+    ipc.server.broadcast(name, data);
+  }
 }
 
 class IPCConnect {
-    constructor() {
-        ipc.connectToNet("ComicViewer");
-    }
+  constructor() {
+    ipc.connectToNet('ComicViewer');
+  }
 
-    on(name, cb) {
-      ipc.of[ipc.config.id].on(name, cb);
-    }
+  on(name, cb) { // eslint-disable-line class-methods-use-this
+    ipc.of[ipc.config.id].on(name, cb);
+  }
 
-    emit(name, data) {
-      ipc.of[ipc.config.id].emit(name, data);
-    }
+  emit(name, data) { // eslint-disable-line class-methods-use-this
+    ipc.of[ipc.config.id].emit(name, data);
+  }
 }
 
-module.exports.serve = IPCServe;
-module.exports.connect = IPCConnect;
+module.exports.Serve = IPCServe;
+module.exports.Connect = IPCConnect;

@@ -1,49 +1,48 @@
 const mkdirp = require('mkdirp');
 const fs = require('fs');
-const _path = require('path');
+const Path = require('path');
 
 class DownloadManager {
-  constructor(update_progress) {
+  constructor(updateProgress) {
     this.download_queue = [];
     this.is_running = false;
 
     this.total = 0;
     this.done = 0;
     this.done_timeout = null;
-    this.update_progress = update_progress;
+    this.update_progress = updateProgress;
   }
 
   download(url, path) {
     if (fs.existsSync(path)) return;
 
-    this.total++;
+    this.total += 1;
     this.download_queue.push({
-      url: url,
-      path: path
-    })
+      url,
+      path,
+    });
 
     if (!this.is_running) this.start();
   }
 
   progress() {
-    return this.total == 0 ? 0 : this.done / this.total;
+    return this.total === 0 ? 0 : this.done / this.total;
   }
 
   start() {
-    var self = this;
+    const self = this;
     if (this.is_running) return;
     this.is_running = true;
 
-    if (this.download_queue.length == 0) return this.is_running = false;
+    if (this.download_queue.length === 0) return this.is_running = false;
 
     // make sure the directory exists
-    var current = this.download_queue.shift();
-    console.log(current);
-    mkdirp.sync(_path.dirname(current.path));
+    const current = this.download_queue.shift();
+    mkdirp.sync(Path.dirname(current.path));
 
     // generate a tmp file in case the download fails
     var tmpPath = tmp.tmpNameSync();
-    var file = fs.createWriteStream(tmpPath);
+    let file = fs.createWriteStream(tmpPath);
 
     // download the file to the tmp file
     var start_time = Date.now();
